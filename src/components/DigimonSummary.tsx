@@ -1,5 +1,5 @@
 import { Avatar, Box, IconButton, styled, Typography } from "@mui/material";
-import { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import Input from "./Input";
 
 const StyledBox = styled(Box)({
@@ -9,10 +9,10 @@ const StyledBox = styled(Box)({
 });
 
 interface DigimonSummaryProps {
-  img: string | undefined;
+  img: string | null;
   digimon: string;
   nameState?: [string, Dispatch<SetStateAction<string>>];
-  imageState?: [string, Dispatch<SetStateAction<string>>];
+  imageState?: [FileList | null, Dispatch<SetStateAction<FileList | null>>];
 }
 
 const DigimonSummary = ({
@@ -21,24 +21,40 @@ const DigimonSummary = ({
   nameState,
   imageState,
 }: DigimonSummaryProps) => {
+
+  function onUpload(files: FileList | null) {
+    if(files === null || imageState === undefined) return
+    imageState[1](files)
+  }
+
+  function renderAvatar() {
+    if(!!img) {
+      return <Avatar src={img} />
+    }
+    if(!!imageState) {
+      return (
+        <IconButton aria-label="upload image" component="label">
+          <input
+            hidden
+            accept="image/*"
+            type="file"
+            onChange={(e) => onUpload(e.target.files)}
+          />
+          <Avatar src={imageState[0] 
+            ? URL.createObjectURL(imageState[0][0]) 
+            : "/agumon-silhouette.jpg"
+          } />
+          </IconButton>
+      )
+    }
+    
+    return <Avatar src={"/agumon-silhouette.jpg"} />
+
+  }
+
   return (
     <StyledBox>
-      {!!img ? (
-        <Avatar src={img} />
-      ) : (
-        <IconButton aria-label="upload image" component="label">
-          {imageState && (
-            <input
-              hidden
-              accept="image/*"
-              type="file"
-              value={imageState[0]}
-              onChange={(e) => imageState[1](e.target.value)}
-            />
-          )}
-          <Avatar src="/agumon-silhouette.jpg" />
-        </IconButton>
-      )}
+      {renderAvatar()}
       {!!digimon ? (
         <Typography>{digimon}</Typography>
       ) : (

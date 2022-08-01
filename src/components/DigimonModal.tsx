@@ -56,15 +56,20 @@ interface DigimonModalProps {
 
 const DigimonModal = ({ open, onClose, digimon }: DigimonModalProps) => {
   const name = useState("");
-  const image = useState("");
+  const image = useState<FileList | null>(null);
 
   const [value, setValue] = useState("0");
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
 
   function onSave() {
+    console.log(!!question || !!answer)
+    if(!question || !answer) return
+
+    const [img] = image
+
     if (!!digimon) {
-      const clonedDigimon = structuredClone(digimon) as CardProps;
+      const clonedDigimon = structuredClone(digimon);
       const questionIndex = clonedDigimon.questions.findIndex(
         (item: QuestionProps) => item.question === question
       );
@@ -84,13 +89,15 @@ const DigimonModal = ({ open, onClose, digimon }: DigimonModalProps) => {
           ],
         });
       }
+      
+      clonedDigimon.img = img ? img[0] : clonedDigimon.img
       updateDigimon(clonedDigimon);
       return onClose();
     }
 
     const data = {
       digimon: name[0],
-      img: image[0],
+      img: img ? img[0] : null,
       questions: [
         {
           question,
@@ -108,7 +115,7 @@ const DigimonModal = ({ open, onClose, digimon }: DigimonModalProps) => {
       <ContainerBox>
         <div>
           <DigimonSummary
-            img={digimon?.img || ""}
+            img={digimon?.img || null}
             digimon={digimon?.digimon || ""}
             nameState={name}
             imageState={image}

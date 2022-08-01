@@ -8,10 +8,24 @@ import {
   doc,
   updateDoc,
 } from "firebase/firestore";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { CardProps } from "../components/Card";
-import { db } from "./firebase";
+import { db, storage } from "./firebase";
 
-export async function createDigimon(payload: Omit<CardProps, "id">) {
+async function uploadImage(image: File | null) {
+  if(image === null) return
+  const imageRef = ref(storage, `images/${image.name}`)
+  const url = await uploadBytes(imageRef, image)
+    .then(async (response) => await getDownloadURL(response.ref))
+    .catch((error) => {
+      console.error(error)
+      return ""
+    })
+  return url
+}
+
+export async function createDigimon(payload: Omit<CardProps, "id" | "img"> & { img: File | string | null }) {
+  payload.img = await uploadImage(payload.img as File) || ""
   try {
     await addDoc(collection(db, "digimons"), {
       ...payload,
@@ -32,8 +46,12 @@ export async function getDigimons() {
   return list;
 }
 
-export async function updateDigimon(payload: CardProps) {
+export async function updateDigimon(payload: Omit<CardProps, "img"> & { img: File | string | null }) {
   const digimonDocRef = doc(db, "digimons", payload.id);
+  console.log(payload.img, payload.img instanceof File)
+  if(payload.img instanceof File) {
+    payload.img = await uploadImage(payload.img as File) || payload.img
+  }
   try {
     await updateDoc(digimonDocRef, {
       ...payload,

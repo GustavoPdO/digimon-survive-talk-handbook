@@ -60,7 +60,7 @@ export type QuestionProps = {
 export interface CardProps {
   id: string;
   digimon: string;
-  img?: string;
+  img: string | null;
   questions: QuestionProps[];
   onEdit?: (digimon: CardProps) => void;
 }
