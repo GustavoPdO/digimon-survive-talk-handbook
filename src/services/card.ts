@@ -48,7 +48,6 @@ export async function getDigimons() {
 
 export async function updateDigimon(payload: Omit<CardProps, "img"> & { img: File | string | null }) {
   const digimonDocRef = doc(db, "digimons", payload.id);
-  console.log(payload.img, payload.img instanceof File)
   if(payload.img instanceof File) {
     payload.img = await uploadImage(payload.img as File) || payload.img
   }

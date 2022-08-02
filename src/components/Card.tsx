@@ -63,9 +63,10 @@ export interface CardProps {
   img: string | null;
   questions: QuestionProps[];
   onEdit?: (digimon: CardProps) => void;
+  isAuthenticated?: boolean
 }
 
-const Card = ({ id, digimon, img, questions, onEdit }: CardProps) => {
+const Card = ({ id, digimon, img, questions, onEdit, isAuthenticated }: CardProps) => {
   return (
     <StyledAccordion>
       <AccordionSummary
@@ -77,7 +78,7 @@ const Card = ({ id, digimon, img, questions, onEdit }: CardProps) => {
       <AccordionDetails>
         <QuestionsList questions={questions} />
       </AccordionDetails>
-      {!!onEdit && (
+      {(!!onEdit && isAuthenticated) && (
         <AccordionActions>
           <IconButton onClick={() => onEdit({ id, digimon, img, questions })}>
             <Edit />

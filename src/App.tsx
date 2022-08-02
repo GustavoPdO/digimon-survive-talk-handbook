@@ -1,11 +1,14 @@
 import { Button } from "@mui/material";
 import { AddCircle } from "@mui/icons-material";
+import { useAuthState } from "react-firebase-hooks/auth";
+
 import "./App.css";
 import Input from "./components/Input";
 import Card, { CardProps } from "./components/Card";
 import React, { useEffect, useState } from "react";
 import DigimonModal from "./components/DigimonModal";
 import { getDigimons } from "./services/card";
+import { auth } from "./services/firebase";
 
 function App() {
   const [list, setList] = useState<CardProps[]>([]);
@@ -13,6 +16,9 @@ function App() {
   const [selectedDigimon, setSelectedDigimon] = useState<CardProps | undefined>(
     undefined
   );
+
+  const [ user ] = useAuthState(auth)
+  console.log(user)
 
   function onFilter(event: React.ChangeEvent<HTMLInputElement>) {
     if (event.target.value.length < 1) return setList([]);
@@ -59,6 +65,7 @@ function App() {
       <main>
         <section className="flex-column-alignCenter">
           <Input label="Search by name" onChange={onFilter} />
+          {!!user &&
           <Button
             sx={{ color: "#da8723" }}
             startIcon={<AddCircle sx={{ color: "#da8723" }} />}
@@ -66,10 +73,11 @@ function App() {
           >
             Add Digimon
           </Button>
+}
         </section>
         <section className="flex-column-alignCenter digiList">
           {list.map((digimon) => (
-            <Card key={digimon.digimon} {...digimon} onEdit={onEdit} />
+            <Card key={digimon.digimon} {...digimon} onEdit={onEdit} isAuthenticated={!!user} />
           ))}
         </section>
       </main>

@@ -63,7 +63,6 @@ const DigimonModal = ({ open, onClose, digimon }: DigimonModalProps) => {
   const [answer, setAnswer] = useState("");
 
   function onSave() {
-    console.log(!!question || !!answer)
     if(!question || !answer) return
 
     const [img] = image
