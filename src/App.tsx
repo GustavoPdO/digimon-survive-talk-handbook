@@ -9,6 +9,7 @@ import React, { useEffect, useState } from "react";
 import DigimonModal from "./components/DigimonModal";
 import { getDigimons } from "./services/card";
 import { auth } from "./services/firebase";
+import SpeedDial from "./components/SpeedDial";
 
 function App() {
   const [list, setList] = useState<CardProps[]>([]);
@@ -17,8 +18,7 @@ function App() {
     undefined
   );
 
-  const [ user ] = useAuthState(auth)
-  console.log(user)
+  const [user] = useAuthState(auth);
 
   function onFilter(event: React.ChangeEvent<HTMLInputElement>) {
     if (event.target.value.length < 1) return setList([]);
@@ -65,19 +65,24 @@ function App() {
       <main>
         <section className="flex-column-alignCenter">
           <Input label="Search by name" onChange={onFilter} />
-          {!!user &&
-          <Button
-            sx={{ color: "#da8723" }}
-            startIcon={<AddCircle sx={{ color: "#da8723" }} />}
-            onClick={onAdd}
-          >
-            Add Digimon
-          </Button>
-}
+          {!!user && (
+            <Button
+              sx={{ color: "#da8723" }}
+              startIcon={<AddCircle sx={{ color: "#da8723" }} />}
+              onClick={onAdd}
+            >
+              Add Digimon
+            </Button>
+          )}
         </section>
         <section className="flex-column-alignCenter digiList">
           {list.map((digimon) => (
-            <Card key={digimon.digimon} {...digimon} onEdit={onEdit} isAuthenticated={!!user} />
+            <Card
+              key={digimon.digimon}
+              {...digimon}
+              onEdit={onEdit}
+              isAuthenticated={!!user}
+            />
           ))}
         </section>
       </main>
@@ -86,6 +91,7 @@ function App() {
         onClose={() => setIsCreating(false)}
         digimon={selectedDigimon}
       />
+      <SpeedDial />
     </>
   );
 }
