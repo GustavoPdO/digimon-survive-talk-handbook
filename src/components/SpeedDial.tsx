@@ -23,18 +23,24 @@ const StyledSpeedDial = styled(MuiSpeedDial)({
   },
 });
 
-const SpeedDial = () => {
+const SpeedDial = ({ isAuthenticated }: { isAuthenticated: boolean }) => {
   const [hidden, setHidden] = useState(false);
   return (
     <StyledSpeedDial
-      hidden={hidden}
+      hidden={isAuthenticated || hidden}
       ariaLabel="login speed dial"
       icon={<SpeedDialIcon />}
     >
-      <SpeedDialAction key="1" icon={<Google />} onClick={login} />
+      <SpeedDialAction
+        key="1"
+        icon={<Google />}
+        title="login"
+        onClick={login}
+      />
       <SpeedDialAction
         key="2"
         icon={<HideSource />}
+        title="close"
         onClick={() => setHidden(true)}
       />
     </StyledSpeedDial>

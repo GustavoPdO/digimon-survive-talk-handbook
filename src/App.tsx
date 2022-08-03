@@ -9,7 +9,6 @@ import React, { useEffect, useState } from "react";
 import DigimonModal from "./components/DigimonModal";
 import { getDigimons } from "./services/card";
 import { auth } from "./services/firebase";
-import SpeedDial from "./components/SpeedDial";
 
 function App() {
   const [list, setList] = useState<CardProps[]>([]);
@@ -91,7 +90,6 @@ function App() {
         onClose={() => setIsCreating(false)}
         digimon={selectedDigimon}
       />
-      <SpeedDial />
     </>
   );
 }
