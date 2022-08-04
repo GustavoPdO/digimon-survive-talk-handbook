@@ -1,4 +1,4 @@
-import { ExpandMore, Save } from "@mui/icons-material";
+import { Close, ExpandMore, Save } from "@mui/icons-material";
 import {
   AccordionDetails,
   AccordionSummary,
@@ -25,6 +25,8 @@ const ContainerBox = styled(Box)({
   flexDirection: "column",
   justifyContent: "space-between",
   minHeight: "300px",
+  maxHeight: "90vh",
+  overflowY: "auto",
   position: "absolute",
   top: "50%",
   left: "50%",
@@ -40,8 +42,9 @@ const ContainerBox = styled(Box)({
 
 const ActionsBox = styled(Box)({
   display: "flex",
-  justifyContent: "right",
+  justifyContent: "space-between",
   marginTop: "auto",
+  paddingTop: "0.5rem",
 
   svg: {
     fill: "#da8723",
@@ -63,9 +66,9 @@ const DigimonModal = ({ open, onClose, digimon }: DigimonModalProps) => {
   const [answer, setAnswer] = useState("");
 
   function onSave() {
-    if(!question || !answer) return
+    if (!question || !answer) return;
 
-    const [img] = image
+    const [img] = image;
 
     if (!!digimon) {
       const clonedDigimon = structuredClone(digimon);
@@ -88,8 +91,8 @@ const DigimonModal = ({ open, onClose, digimon }: DigimonModalProps) => {
           ],
         });
       }
-      
-      clonedDigimon.img = img ? img[0] : clonedDigimon.img
+
+      clonedDigimon.img = img ? img[0] : clonedDigimon.img;
       updateDigimon(clonedDigimon);
       return onClose();
     }
@@ -156,10 +159,13 @@ const DigimonModal = ({ open, onClose, digimon }: DigimonModalProps) => {
             </AccordionDetails>
           </InnerAccordion>
           {digimon?.questions && (
-            <QuestionsList questions={digimon.questions} />
+            <QuestionsList questions={digimon.questions} isEditing={true} />
           )}
         </div>
         <ActionsBox>
+          <IconButton title="Close" onClick={onClose}>
+            <Close />
+          </IconButton>
           <IconButton title="Save" onClick={onSave}>
             <Save />
           </IconButton>

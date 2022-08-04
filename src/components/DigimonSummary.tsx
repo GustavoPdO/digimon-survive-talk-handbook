@@ -1,5 +1,5 @@
 import { Avatar, Box, IconButton, styled, Typography } from "@mui/material";
-import React, { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction } from "react";
 import Input from "./Input";
 
 const StyledBox = styled(Box)({
@@ -21,17 +21,16 @@ const DigimonSummary = ({
   nameState,
   imageState,
 }: DigimonSummaryProps) => {
-
   function onUpload(files: FileList | null) {
-    if(files === null || imageState === undefined) return
-    imageState[1](files)
+    if (files === null || imageState === undefined) return;
+    imageState[1](files);
   }
 
   function renderAvatar() {
-    if(!!img) {
-      return <Avatar src={img} />
+    if (!!img) {
+      return <Avatar src={img} />;
     }
-    if(!!imageState) {
+    if (!!imageState) {
       return (
         <IconButton aria-label="upload image" component="label">
           <input
@@ -40,16 +39,18 @@ const DigimonSummary = ({
             type="file"
             onChange={(e) => onUpload(e.target.files)}
           />
-          <Avatar src={imageState[0] 
-            ? URL.createObjectURL(imageState[0][0]) 
-            : "/agumon-silhouette.jpg"
-          } />
-          </IconButton>
-      )
+          <Avatar
+            src={
+              imageState[0]
+                ? URL.createObjectURL(imageState[0][0])
+                : "/agumon-silhouette.jpg"
+            }
+          />
+        </IconButton>
+      );
     }
-    
-    return <Avatar src={"/agumon-silhouette.jpg"} />
 
+    return <Avatar src={"/agumon-silhouette.jpg"} />;
   }
 
   return (

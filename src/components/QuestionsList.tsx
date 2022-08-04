@@ -7,6 +7,7 @@ import {
   Typography,
 } from "@mui/material";
 import { InnerAccordion } from "./Card";
+import CopyToClipboardWrapper from "./CopyToClipboardWrapper";
 
 const StyledBox = styled(Box)({
   display: "flex",
@@ -25,15 +26,20 @@ interface QuestionsListProps {
       value: string;
     }>;
   }>;
+  isEditing?: boolean;
 }
 
-const QuestionsList = ({ questions }: QuestionsListProps) => {
+const QuestionsList = ({ questions, isEditing }: QuestionsListProps) => {
   return (
     <>
       {questions.map(({ question, answers }, index) => (
         <InnerAccordion key={`${question}-${index}`}>
           <AccordionSummary expandIcon={<ExpandMore />}>
-            <Typography>{question}</Typography>
+            {isEditing ? (
+              <CopyToClipboardWrapper>{question}</CopyToClipboardWrapper>
+            ) : (
+              <Typography>{question}</Typography>
+            )}
           </AccordionSummary>
           <AccordionDetails>
             <div className="responses-container">

@@ -32,6 +32,7 @@ export const InnerAccordion = styled(Accordion)({
   borderRadius: "0 !important",
   color: "#da8723",
   boxShadow: "none",
+  padding: "0.5rem 0",
 
   "& .Mui-expanded": {
     minHeight: "32px",
@@ -63,10 +64,17 @@ export interface CardProps {
   img: string | null;
   questions: QuestionProps[];
   onEdit?: (digimon: CardProps) => void;
-  isAuthenticated?: boolean
+  isAuthenticated?: boolean;
 }
 
-const Card = ({ id, digimon, img, questions, onEdit, isAuthenticated }: CardProps) => {
+const Card = ({
+  id,
+  digimon,
+  img,
+  questions,
+  onEdit,
+  isAuthenticated,
+}: CardProps) => {
   return (
     <StyledAccordion>
       <AccordionSummary
@@ -78,7 +86,7 @@ const Card = ({ id, digimon, img, questions, onEdit, isAuthenticated }: CardProp
       <AccordionDetails>
         <QuestionsList questions={questions} />
       </AccordionDetails>
-      {(!!onEdit && isAuthenticated) && (
+      {!!onEdit && isAuthenticated && (
         <AccordionActions>
           <IconButton onClick={() => onEdit({ id, digimon, img, questions })}>
             <Edit />
