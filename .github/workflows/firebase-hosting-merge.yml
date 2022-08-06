@@ -10,6 +10,7 @@ env:
   REACT_APP_FIREBASE_API_KEY: ${{ secrets.REACT_APP_FIREBASE_API_KEY }}
   REACT_APP_FIREBASE_MESSAGING_ID: ${{ secrets.REACT_APP_FIREBASE_MESSAGING_ID }}
   REACT_APP_FIREBASE_APP_ID: ${{ secrets.REACT_APP_FIREBASE_APP_ID }}
+  REACT_APP_USER_ID: ${{ secrets.REACT_APP_USER_ID }}
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest

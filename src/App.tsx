@@ -9,6 +9,8 @@ import React, { useEffect, useState } from "react";
 import DigimonModal from "./components/DigimonModal";
 import { getDigimons } from "./services/card";
 import { auth } from "./services/firebase";
+import SpeedDial from "./components/SpeedDial";
+import { isAdmin } from "./helpers/getAuth";
 
 function App() {
   const [list, setList] = useState<CardProps[]>([]);
@@ -64,7 +66,7 @@ function App() {
       <main>
         <section className="flex-column-alignCenter">
           <Input label="Search by name" onChange={onFilter} />
-          {!!user && (
+          {isAdmin(user) && (
             <Button
               sx={{ color: "#da8723" }}
               startIcon={<AddCircle sx={{ color: "#da8723" }} />}
@@ -80,7 +82,7 @@ function App() {
               key={digimon.digimon}
               {...digimon}
               onEdit={onEdit}
-              isAuthenticated={!!user}
+              isAuthenticated={isAdmin(user)}
             />
           ))}
         </section>
@@ -90,6 +92,7 @@ function App() {
         onClose={() => setIsCreating(false)}
         digimon={selectedDigimon}
       />
+      <SpeedDial isAuthenticated={!!user} />
     </>
   );
 }

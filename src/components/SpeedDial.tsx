@@ -9,7 +9,7 @@ import { useState } from "react";
 import { login } from "../services/auth";
 
 const StyledSpeedDial = styled(MuiSpeedDial)({
-  position: "absolute",
+  position: "fixed",
   bottom: "0.75rem",
   right: "0.75rem",
 
