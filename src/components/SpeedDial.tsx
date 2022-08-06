@@ -25,6 +25,12 @@ const StyledSpeedDial = styled(MuiSpeedDial)({
 
 const SpeedDial = ({ isAuthenticated }: { isAuthenticated: boolean }) => {
   const [hidden, setHidden] = useState(false);
+
+  function onLogin() {
+    login()
+    setHidden(true)
+  }
+
   return (
     <StyledSpeedDial
       hidden={isAuthenticated || hidden}
@@ -35,7 +41,7 @@ const SpeedDial = ({ isAuthenticated }: { isAuthenticated: boolean }) => {
         key="1"
         icon={<Google />}
         title="login"
-        onClick={login}
+        onClick={onLogin}
       />
       <SpeedDialAction
         key="2"
