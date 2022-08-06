@@ -43,8 +43,7 @@ const ContainerBox = styled(Box)({
 const ActionsBox = styled(Box)({
   display: "flex",
   justifyContent: "space-between",
-  marginTop: "auto",
-  paddingTop: "0.5rem",
+  paddingBottom: "0.5rem",
 
   svg: {
     fill: "#da8723",
@@ -115,6 +114,14 @@ const DigimonModal = ({ open, onClose, digimon }: DigimonModalProps) => {
   return (
     <Modal open={open} onClose={onClose}>
       <ContainerBox>
+        <ActionsBox>
+          <IconButton title="Close" onClick={onClose}>
+            <Close />
+          </IconButton>
+          <IconButton title="Save" onClick={onSave}>
+            <Save />
+          </IconButton>
+        </ActionsBox>
         <div>
           <DigimonSummary
             img={digimon?.img || null}
@@ -162,14 +169,6 @@ const DigimonModal = ({ open, onClose, digimon }: DigimonModalProps) => {
             <QuestionsList questions={digimon.questions} isEditing={true} />
           )}
         </div>
-        <ActionsBox>
-          <IconButton title="Close" onClick={onClose}>
-            <Close />
-          </IconButton>
-          <IconButton title="Save" onClick={onSave}>
-            <Save />
-          </IconButton>
-        </ActionsBox>
       </ContainerBox>
     </Modal>
   );
