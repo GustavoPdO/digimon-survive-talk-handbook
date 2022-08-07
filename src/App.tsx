@@ -20,7 +20,6 @@ function App() {
   );
 
   const [user] = useAuthState(auth);
-  console.log(user);
 
   function onFilter(event: React.ChangeEvent<HTMLInputElement>) {
     if (event.target.value.length < 1) return setList([]);
