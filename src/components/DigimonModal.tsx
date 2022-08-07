@@ -2,53 +2,18 @@ import { Close, ExpandMore, Save } from "@mui/icons-material";
 import {
   AccordionDetails,
   AccordionSummary,
-  Box,
   IconButton,
   MenuItem,
-  Modal,
-  styled,
   Typography,
 } from "@mui/material";
 import { useState } from "react";
-import { ContainerColors, ContainerWidth } from "../config/layout";
 import { createDigimon, updateDigimon } from "../services/card";
 import { CardProps, InnerAccordion, QuestionProps } from "./Card";
 import DigimonSummary from "./DigimonSummary";
 import Input from "./Input";
+import Modal from "./Modal";
 import QuestionsList from "./QuestionsList";
 import Select from "./Select";
-
-const ContainerBox = styled(Box)({
-  ...ContainerWidth,
-  ...ContainerColors,
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "space-between",
-  minHeight: "300px",
-  maxHeight: "90vh",
-  overflowY: "auto",
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  padding: "16px",
-
-  p: {
-    fontSize: "1.2rem",
-    color: "#da8723",
-    marginTop: "0.5rem",
-  },
-});
-
-const ActionsBox = styled(Box)({
-  display: "flex",
-  justifyContent: "space-between",
-  paddingBottom: "0.5rem",
-
-  svg: {
-    fill: "#da8723",
-  },
-});
 
 interface DigimonModalProps {
   open: boolean;
@@ -112,17 +77,21 @@ const DigimonModal = ({ open, onClose, digimon }: DigimonModalProps) => {
   }
 
   return (
-    <Modal open={open} onClose={onClose}>
-      <ContainerBox>
-        <ActionsBox>
+    <Modal
+      open={open}
+      onClose={onClose}
+      actions={
+        <>
           <IconButton title="Close" onClick={onClose}>
             <Close />
           </IconButton>
           <IconButton title="Save" onClick={onSave}>
             <Save />
           </IconButton>
-        </ActionsBox>
-        <div>
+        </>
+      }
+      content={
+        <>
           <DigimonSummary
             img={digimon?.img || null}
             digimon={digimon?.digimon || ""}
@@ -168,9 +137,9 @@ const DigimonModal = ({ open, onClose, digimon }: DigimonModalProps) => {
           {digimon?.questions && (
             <QuestionsList questions={digimon.questions} isEditing={true} />
           )}
-        </div>
-      </ContainerBox>
-    </Modal>
+        </>
+      }
+    />
   );
 };
 
