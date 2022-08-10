@@ -1,34 +1,29 @@
+import { useState } from "react";
 import { Button } from "@mui/material";
 import { AddCircle } from "@mui/icons-material";
 import { useAuthState } from "react-firebase-hooks/auth";
 
-import "./App.css";
-import Input from "./components/Input";
 import Card, { CardProps } from "./components/Card";
-import React, { useEffect, useState } from "react";
 import DigimonModal from "./components/DigimonModal";
-import { getDigimons } from "./services/card";
-import { auth } from "./services/firebase";
+import Input from "./components/Input";
 import SpeedDial from "./components/SpeedDial";
+import { auth } from "./services/firebase";
 import { isAdmin } from "./helpers/getAuth";
+import useData from "./hooks/useData";
+import "./App.css";
 
 function App() {
-  const [list, setList] = useState<CardProps[]>([]);
+  const list = (useData() || []) as CardProps[];
+  const [filter, setFilter] = useState("");
   const [isCreating, setIsCreating] = useState(false);
   const [selectedDigimon, setSelectedDigimon] = useState<CardProps | undefined>(
     undefined
   );
 
   const [user] = useAuthState(auth);
-
-  function onFilter(event: React.ChangeEvent<HTMLInputElement>) {
-    if (event.target.value.length < 1) return setList([]);
-    setList(
-      list.filter((item) =>
-        item.digimon.toLowerCase().includes(event.target.value.toLowerCase())
-      )
-    );
-  }
+  const filteredList = list.filter((item) =>
+    item.digimon.toLowerCase().includes(filter.toLowerCase())
+  );
 
   function onAdd() {
     setSelectedDigimon(undefined);
@@ -39,15 +34,6 @@ function App() {
     setSelectedDigimon(digimon);
     setIsCreating(true);
   }
-
-  useEffect(() => {
-    async function getData() {
-      const response = await getDigimons();
-      setList(response);
-    }
-
-    getData();
-  }, [isCreating]);
 
   return (
     <>
@@ -65,7 +51,10 @@ function App() {
       </header>
       <main>
         <section className="flex-column-alignCenter">
-          <Input label="Search by name" onChange={onFilter} />
+          <Input
+            label="Search by name"
+            onChange={(e) => setFilter(e.target.value)}
+          />
           {isAdmin(user) && (
             <Button
               sx={{ color: "#da8723" }}
@@ -77,7 +66,7 @@ function App() {
           )}
         </section>
         <section className="flex-column-alignCenter digiList">
-          {list.map((digimon) => (
+          {filteredList.map((digimon) => (
             <Card
               key={digimon.digimon}
               {...digimon}
@@ -88,6 +77,7 @@ function App() {
         </section>
       </main>
       <DigimonModal
+        key={selectedDigimon?.id || "none"}
         open={isCreating}
         onClose={() => setIsCreating(false)}
         digimon={selectedDigimon}
