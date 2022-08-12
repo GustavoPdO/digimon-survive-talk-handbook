@@ -13,13 +13,13 @@ import useData from "./hooks/useData";
 import "./App.css";
 
 function App() {
-  const list = (useData() || []) as CardProps[];
   const [filter, setFilter] = useState("");
   const [isCreating, setIsCreating] = useState(false);
   const [selectedDigimon, setSelectedDigimon] = useState<CardProps | undefined>(
     undefined
   );
 
+  const list = (useData(isCreating) || []) as CardProps[];
   const [user] = useAuthState(auth);
   const filteredList = list.filter((item) =>
     item.digimon.toLowerCase().includes(filter.toLowerCase())

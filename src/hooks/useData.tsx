@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { getDigimons } from "../services/card";
 
-const useData = () => {
+const useData = (dependency?: boolean) => {
   const [data, setData] = useState<unknown>();
   useEffect(() => {
     let ignore = false;
@@ -15,7 +15,7 @@ const useData = () => {
     return () => {
       ignore = true;
     };
-  }, []);
+  }, [dependency]);
 
   return data;
 };
