@@ -10,7 +10,7 @@ const useData = (dependency?: boolean) => {
       setData(response);
     }
 
-    if (!ignore) getData();
+    if (!ignore && !dependency) getData();
 
     return () => {
       ignore = true;
