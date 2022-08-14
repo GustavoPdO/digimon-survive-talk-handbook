@@ -13,19 +13,21 @@ import { CardProps } from "../components/Card";
 import { db, storage } from "./firebase";
 
 async function uploadImage(image: File | null) {
-  if(image === null) return
-  const imageRef = ref(storage, `images/${image.name}`)
+  if (image === null) return;
+  const imageRef = ref(storage, `images/${image.name}`);
   const url = await uploadBytes(imageRef, image)
     .then(async (response) => await getDownloadURL(response.ref))
     .catch((error) => {
-      console.error(error)
-      return ""
-    })
-  return url
+      console.error(error);
+      return "";
+    });
+  return url;
 }
 
-export async function createDigimon(payload: Omit<CardProps, "id" | "img"> & { img: File | string | null }) {
-  payload.img = await uploadImage(payload.img as File) || ""
+export async function createDigimon(
+  payload: Omit<CardProps, "id" | "img"> & { img: File | string | null }
+) {
+  payload.img = (await uploadImage(payload.img as File)) || "";
   try {
     await addDoc(collection(db, "digimons"), {
       ...payload,
@@ -37,7 +39,8 @@ export async function createDigimon(payload: Omit<CardProps, "id" | "img"> & { i
 }
 
 export async function getDigimons() {
-  const q = query(collection(db, "digimons"), orderBy("digimon", "desc"));
+  console.log("getting");
+  const q = query(collection(db, "digimons"), orderBy("digimon", "asc"));
   const querySnapshot = await getDocs(q);
   const list: CardProps[] = [];
   querySnapshot.forEach((doc) => {
@@ -46,10 +49,12 @@ export async function getDigimons() {
   return list;
 }
 
-export async function updateDigimon(payload: Omit<CardProps, "img"> & { img: File | string | null }) {
+export async function updateDigimon(
+  payload: Omit<CardProps, "img"> & { img: File | string | null }
+) {
   const digimonDocRef = doc(db, "digimons", payload.id);
-  if(payload.img instanceof File) {
-    payload.img = await uploadImage(payload.img as File) || payload.img
+  if (payload.img instanceof File) {
+    payload.img = (await uploadImage(payload.img as File)) || payload.img;
   }
   try {
     await updateDoc(digimonDocRef, {
