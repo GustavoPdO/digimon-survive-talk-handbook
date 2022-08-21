@@ -128,6 +128,7 @@ const DigimonModal = ({ open, onClose, digimon }: DigimonModalProps) => {
                   value={value}
                   onChange={(e) => setValue(e.target.value as string)}
                 >
+                  <MenuItem value="-2">-2</MenuItem>
                   <MenuItem value="-1">-1</MenuItem>
                   <MenuItem value="0">0</MenuItem>
                   <MenuItem value="1">1</MenuItem>
