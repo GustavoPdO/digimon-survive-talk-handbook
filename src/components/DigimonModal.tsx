@@ -73,6 +73,8 @@ const DigimonModal = ({ open, onClose, digimon }: DigimonModalProps) => {
     };
 
     createDigimon(data);
+    setQuestion("");
+    setAnswer("");
     onClose();
   }
 
