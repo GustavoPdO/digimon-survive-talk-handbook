@@ -39,7 +39,6 @@ export async function createDigimon(
 }
 
 export async function getDigimons() {
-  console.log("getting");
   const q = query(collection(db, "digimons"), orderBy("digimon", "asc"));
   const querySnapshot = await getDocs(q);
   const list: CardProps[] = [];

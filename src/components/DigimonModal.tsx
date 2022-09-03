@@ -33,11 +33,14 @@ const DigimonModal = ({ open, onClose, digimon }: DigimonModalProps) => {
     if (!question || !answer) return;
 
     const [img] = image;
+    const trimmedQuestion = question.trim();
+    setQuestion("");
+    setAnswer("");
 
     if (!!digimon) {
       const clonedDigimon = structuredClone(digimon);
       const questionIndex = clonedDigimon.questions.findIndex(
-        (item: QuestionProps) => item.question === question
+        (item: QuestionProps) => item.question === trimmedQuestion
       );
       if (questionIndex > -1) {
         clonedDigimon.questions[questionIndex].answers.push({
@@ -46,7 +49,7 @@ const DigimonModal = ({ open, onClose, digimon }: DigimonModalProps) => {
         });
       } else {
         clonedDigimon.questions.push({
-          question,
+          question: trimmedQuestion,
           answers: [
             {
               answer,
@@ -66,16 +69,14 @@ const DigimonModal = ({ open, onClose, digimon }: DigimonModalProps) => {
       img: img ? img[0] : null,
       questions: [
         {
-          question,
+          question: trimmedQuestion,
           answers: [{ answer, value }],
         },
       ],
     };
 
     createDigimon(data);
-    setQuestion("");
-    setAnswer("");
-    onClose();
+    return onClose();
   }
 
   return (
